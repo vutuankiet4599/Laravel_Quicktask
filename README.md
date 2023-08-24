@@ -111,3 +111,40 @@ $user = User::find(1); // Tìm kiếm user với id là 1
 $user->is_admin = true; // Cập nhật thông tin user
 $user->save(); // Lưu lại thông tin đã cập nhật
 ```
+
+## Chapter 3
+
+### Câu 1: Kể tên các quan hệ của Laravel và các phương thức tương ứng
+
+-   One To One: hasOne() và belongsTo().
+-   One To Many: hasMany() và belongsTo().
+-   Many To Many: withPivot() và belongsToMany().
+-   Has One Through: hasOneThrough().
+-   Has Many Through: hasManyThrough().
+-   One To One (Polymorphic): morphTo() và morphOne().
+-   One To Many (Polymorphic): morphTo() và morphMany().
+-   Many To Many (Polymorphic): morphToMany() và morphedByMany().
+
+### Câu 2: Các hàm attach(), detach(), toggle(), sync() dùng để làm gì ?
+
+-   Những phương thức này làm việc trong quan hệ Many To Many.
+-   attach(): Chèn thông tin vào bản ghi trung gian giữa 2 bảng.
+-   detach(): Xóa thông tin trong bản ghi trung gian giữa 2 bảng. Tuy nhiên thông tin của 2 bảng vẫn còn lưu lại.
+-   sync(): Nhận một mảng id để đặt lên bảng trung gian. Bất kỳ id nào không có trong mảng đã cho sẽ bị xóa khỏi bảng trung gian.
+-   toggle(): Lật detach thành attach hay ngược lại.
+
+### Câu 3: Làm thế nào để lấy dữ liệu từ bảng trung gian trong quan hệ n-n
+
+-   Có thể dùng phương thức withPivot(). Ví dụ trong quan hệ User và Role:
+
+```php
+class User extends Authenticatable {
+    public function roles() {
+        return $this->belongsToMany(Role::class, 'roles_users')->withPivot('created_at');
+    }
+}
+$roles = User::first()->roles;
+foreach ($roles as $role) {
+    echo $role->pivot->created_at;
+}
+```

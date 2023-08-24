@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->boolean('is_admin');
-            $table->boolean('is_active');
+            $table->boolean('is_admin')->default(false);
+            $table->boolean('is_active')->default(false);
             $table->string('username');
             $table->dropColumn('name');
             $table->string('first_name');
@@ -28,7 +28,7 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->string('name');
-            $table->dropIfColumm('is_admin');
+            $table->dropColumn('is_admin');
             $table->dropColumn('is_active');
             $table->dropColumn('username');
             $table->dropColumn('first_name');
