@@ -53,3 +53,61 @@ Phần này em sẽ chỉ nói về những phần hay dùng
 -   HTTP Kernel extends Illuminate\Foundation\Http\Kernel chứa các bootstrappers tiền xử lý trước khi request được xử lý. Nó cũng định nghĩa các HTTP Middleware buộc các request phải đi qua trước khi đến xử lý chính bởi ứng dụng.
 -   Tiếp đó, phương thức handle của kernel sẽ tham số là Request rồi xử lý và trả ra Response
 -   Khi router hay controller trả ra response, nó sẽ đi qua các route middleware cho phép ứng dụng chỉnh sửa và kiểm tra các response. Sau đó phương thức handle của HTTP Kernel trả ra một object và file index.php gọi phương thức send để trả ra kết quả cho người dùng
+
+## Chapter 2
+
+### Câu 1: Migration là gì
+
+Migration làm việc giống như là một cái version control giúp chúng ta xác định và chia sẻ định nghĩa của lược đồ cơ sở dữ liệu của ứng dụng
+
+### Câu 2: Hàm up() và down() trong một class migration để làm gì
+
+-   Hàm up() dùng để tạo mới, xóa, sửa bảng, cột, hoặc là index vào database.
+-   Hàm down() là để đảo ngược lại các hành động của hàm up().
+
+### Câu 3: Nêu các câu lệnh thông dụng của migration mà bạn biết
+
+Một số câu lệnh thông dụng:
+
+-   Tạo một migration: php artisan make: migration <TÊN-MIGRATION>
+-   Chạy migration: php artisan migrate
+-   Rollback toàn bộ migrate và chạy lại migrate: php artisan migrate:refresh
+-   Rollback về một migration nào đó: php artisan migrate:rollback
+
+### Câu 4: Mass assignment là gì
+
+Là một quá trình gửi một mảng dữ liệu mà sẽ được lưu vào model được chỉ định cùng một lúc. Mình sẽ không phải lưu từng dữ liệu trên model mà nó sẽ theo một quy trình duy nhất
+
+### Câu 5: Cách xử lý Mass assignment trong Laravel
+
+-   Cách phương thức để tạo mass assignment
+
+```php
+ModelName::create(ArrayData);
+// hoặc
+$model = new ModelName();
+$model->fill(ArrayData);
+```
+
+-   Một số thuộc tính
+
+```php
+$fillable = [];
+// Định nghĩa các trường sẽ được phép mass assignment
+$guarded = [];
+// Định nghĩa các trường không được phép mass assignment
+```
+
+### Câu 6: Tại sao Laravel có thuộc tính "fillable" và "guarded"
+
+Bởi vì mass assignment tiềm ẩn một lỗ hổng bảo mật. Các dữ liệu được gửi lên từ client có thể chứa những thông tin mà ta không mong muốn. Ví dụ như trong bài học model User có trường is_admin mà ta không muốn người dùng được quyền sửa nhưng khi gửi form người dùng có thể sửa đổi code html để gửi thông tin is_admin = true lên và mass assignment sẽ tự dộng lưu thông tin đó. Vì thế chúng ta cần 2 trường này. Mục đích của 2 trường này xem câu 5.
+
+### Câu 7: Với các thuộc tính nằm trong blacklist ta làm thế nào để cập nhật các trường dữ liệu đó
+
+Dùng phương thức bình thường để cập nhật nó. Ví dụ:
+
+```php
+$user = User::find(1); // Tìm kiếm user với id là 1
+$user->is_admin = true; // Cập nhật thông tin user
+$user->save(); // Lưu lại thông tin đã cập nhật
+```
