@@ -12,7 +12,7 @@ class Task extends Model
 
     protected $table = 'tasks';
 
-    protected $fillable = ['content', 'deadline'];
+    protected $fillable = ['content', 'deadline', 'user_id'];
 
     public function users(): BelongsTo {
         return $this->belongsTo(User::class);
