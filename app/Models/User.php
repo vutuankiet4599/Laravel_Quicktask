@@ -3,10 +3,17 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use App\Models\Scopes\ActiveUser;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Support\Str;
 
 class User extends Authenticatable
 {
@@ -45,12 +52,38 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    protected static function booted(): void {
+        static::addGlobalScope(new ActiveUser);
+    }
+
+    public function scopeIsAdmin(Builder $query): void {
+        $query->where('is_admin', true);
+    }
     
-    public function tasks() {
+    public function tasks(): HasMany {
         return $this->hasMany(Task::class);
     }
 
-    public function roles() {
+    public function roles(): BelongsToMany {
         return $this->belongsToMany(Role::class, 'roles_users');
+    }
+
+    protected function fullName(): Attribute {
+        return Attribute::make(
+            get: fn ($value) => $this->attributes['first_name'] . ' ' . $this->attributes['last_name'],
+        );
+    }
+
+    public function firstName(): Attribute {
+        return Attribute::make(
+            get: fn (string $value) => Str::upper($value),
+        );
+    }
+
+    public function username(): Attribute {
+        return Attribute::make(
+            set: fn (string $value) => Str::slug($value),
+        );
     }
 }
