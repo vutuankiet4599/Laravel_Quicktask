@@ -148,3 +148,90 @@ foreach ($roles as $role) {
     echo $role->pivot->created_at;
 }
 ```
+
+## Chapter 4
+
+### Câu 1: Accessors/Mutators dùng để làm gì ?
+
+-   Accessors: là các phương thức dùng để chuyển đổi giá trị của thuộc tính khi nó được truy cập.
+-   Mutators: Là các phương thức dùng để chuyển đổi giá trị của thuộc tính trước khi được lưu vào database khi nó được set.
+
+### Câu 2: Tạo Accessors/Mutators như thế nào ?
+
+Tạo ở bên trong Model. Ở đây ví dụ sử dụng model User.
+
+-   Accessors:
+
+```php
+// Chuyển toàn bộ ký tự thành chữ hoa trước khi lấy ra
+public function firstName(): Attribute {
+    return Attribute::make(
+        get: fn (string $value) => Str::upper($value),
+    );
+}
+User::first()->first_name;
+// Output: vu van => VU VAN
+```
+
+-   Mutators:
+
+```php
+// Chuyển username thành dạng slug trước khi lưu
+public function username(): Attribute {
+    return Attribute::make(
+        set: fn (string $value) => Str::slug($value),
+    );
+}
+$user = User::create(['first_name'=>'vu tuan', 'last_name'=>'kiet','email'=>'vutuankiet@gmail.com','username'=>'vu tuan kiet','password'=>md5('123456'),'is_active'=>true]);
+$user->username // 'vu-tuan-kiet'
+```
+
+### Câu 3: Scope dùng để làm gì ?
+
+Scope hay Query Scope là một cách đóng gói và tái sử dụng câu truy vấn trong Eloquent ORM. Nó cho phép xác định các phương thức để mở rộng và tùy chỉnh câu truy vấn. Bằng cách áp dụng scope mình có thể tạo các phương thức tùy chỉnh để áp dụng điều kiện, sắp xếp, phân trang hoặc thực hiện các thao tác khác trên câu truy vấn.
+
+### Câu 4: Nêu các loại scope trong Laravel
+
+Có 2 loại scope là Global Scope và Local Scope.
+
+-   Global Scope: Câu truy vấn được định nghĩa trong scope sẽ có tác dụng trong mọi truy vấn của model.
+    -   Tạo một global scope với tên là ActiveUser
+    ```bash
+    php artisan make:scope ActiveUser
+    ```
+    -   Định nghĩa câu truy vấn trong scope:
+    ```php
+    class ActiveUser implements Scope
+    {
+        // Return là void
+        public function apply(Builder $builder, Model $model): void
+        {
+            $builder->where('is_active', '=', true);
+        }
+    }
+    ```
+    -   Áp dụng nó vào trong model. Tại model User:
+    ```php
+    protected static function booted(): void {
+        static::addGlobalScope(new ActiveUser);
+    }
+    ```
+    -   Sử dụng
+    ```php
+    User::all();
+    // Sẽ trả ra các user mà có is_active là true
+    ```
+-   Local Scope: Câu truy vấn được định nghĩa có thể dễ dàng tái sử dụng dễ dàng khi được gọi.
+    -   Tạo local scope trong User model:
+    ```php
+    // Tên tiền tố là scope, return là void
+    // Lấy toàn bộ user có is_admin là true
+    public function scopeIsAdmin(Builder $query): void {
+        $query->where('is_admin', true);
+    }
+    ```
+    -   Sử dụng:
+    ```php
+    User::isAdmin()->get();
+    // Trả ra toàn bộ user có is_admin là true
+    ```
