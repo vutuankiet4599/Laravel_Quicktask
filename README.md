@@ -257,3 +257,34 @@ Có 2 loại scope là Global Scope và Local Scope.
     -   Dùng để tạo dữ liệu giả lập cho các model.
     -   Dùng trong quá trình phát triển và kiểm thử.
     -   Dùng để tùy chỉnh dữ liệu mẫu trong quá trình phát triển
+
+## Chapter 6:
+
+### Câu 1: Mô tả cấu trúc một route trong Laravel
+
+Cấu trúc một route cơ bản trong laravel
+
+```php
+Route::middleware($middleware)->method($uri, $callback)->name($name);
+```
+
+-   Đầu tiên là Route Facade để thông báo là mình đang khởi tạo một route.
+-   Sau đó là middleware [OPTIONAL]: là một string hoặc array hoặc null dùng để khai báo các middleware request phải đi qua trước khi được xử lý.
+-   Sau đó là method: Là các phương thức HTTP: GET (get), POST (post), PUT (put), DELETE (delete), PATCH (patch)... để xác định các yêu cầu được xử lý
+-   Trong method có 2 tham số:
+    -   $uri: là một string dùng để nhận biết được request từ địa chỉ nào.
+    -   $callback: là một array hoặc string hoặc callable hoặc null dùng để khai báo phương thức xử lý request trong route.
+-   Cuối cùng là name [OPTIONAL]: dùng để đặt tên cho route. đầu vào là string
+
+Ngoài ra, Route Facade còn hỗ trợ gom nhóm route thông qua phương thức group() và cho phép đặt tiền tố của một nhóm route bằng phương thức prefix().
+
+### Câu 2: Kể tên các hàm trong resource controller và phương thức/công dụng tương ứng.
+
+-   Các phương thức trong resource controller:
+    -   index(): Hiển thị danh sách các resource.
+    -   create(): Hiển thị form tạo resource mới.
+    -   store(): Lưu resource vừa tạo.
+    -   show(): Hiển thị một resource được chỉ định.
+    -   edit(): Hiển thị form để sửa một resource được chỉ định.
+    -   update(): Cập nhật thông tin của một resource được chỉ định.
+    -   delete(): Xóa resource được chỉ định
