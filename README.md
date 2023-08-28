@@ -235,3 +235,25 @@ Có 2 loại scope là Global Scope và Local Scope.
     User::isAdmin()->get();
     // Trả ra toàn bộ user có is_admin là true
     ```
+
+## Chapter 5
+
+### Câu 1: Seeder/Factory/Faker dùng để làm gì?
+
+-   Seeder: Giúp chúng ta chèn dữ liệu ban đầu như tài khoản Admin... vào trong database mà không cần thông qua thao tác của người dùng (Chạy phía server).
+-   Factory: Giúp chúng ta tạo số lượng lớn các bản ghi để chèn vào database. Thường dùng đi kèm với Seeder.
+-   Faker: Dùng để tạo dữ liệu giả để làm dữ liệu test. Có thể tạo dữ liệu ở nhiều định dạng như text, email, address, file, username... Thường dùng với Factory và Seeder.
+
+### Câu 2: Khi nào nên sử dụng Seeder? Khi nào nên sử dụng Factory?
+
+-   Seeder:
+
+    -   Dùng khi muốn tạo dữ liệu mẫu ban đầu với cơ sở dữ liệu.
+    -   Thường dùng để tạo dữ liệu cố định, không đổi thường xuyên.
+    -   Thường dùng trong quá trình triển khai ban đầu của hệ thống hoặc trong giai đoạn phát triển.
+
+-   Factory:
+    -   Dùng khi cần tạo dữ liệu mẫu động hoặc tạo nhanh nhiều bản ghi trong quá trình phát triển và kiểm thử
+    -   Dùng để tạo dữ liệu giả lập cho các model.
+    -   Dùng trong quá trình phát triển và kiểm thử.
+    -   Dùng để tùy chỉnh dữ liệu mẫu trong quá trình phát triển
