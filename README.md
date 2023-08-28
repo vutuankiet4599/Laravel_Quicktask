@@ -288,3 +288,16 @@ Ngoài ra, Route Facade còn hỗ trợ gom nhóm route thông qua phương th�
     -   edit(): Hiển thị form để sửa một resource được chỉ định.
     -   update(): Cập nhật thông tin của một resource được chỉ định.
     -   delete(): Xóa resource được chỉ định
+
+### Chapter 7
+
+## Câu 1: Middleware dùng để làm gì?
+
+-   Nó là một tầng nằm giữa server và clients. Khi người dùng gửi request, nó sẽ đi qua các middleware của Laravel và tới bên trong controller. Khi controller xử lý xong dữ liệu và gửi trả lại người dùng nó cũng sẽ đi qua một số middleware.
+-   Khi các request đi qua các middleware, middleware sẽ có nhiệm vụ tiền xử lý, chỉnh sửa, kiểm tra xem các request trước khi đi vào xử lý chính. Một số công việc thường gặp trong middleware: Xác thực; Kiểm tra vai trò; Kiểm tra quyền; Xử lý CSRF; Xử lý dữ liệu đầu vào; Ghi log
+
+## Câu 2: Phân biệt Global Middleware, Group Middleware và Route Middleware
+
+-   Global Middleware: Bất cứ request nào đi vào server cần phải đi qua middleware này này.
+-   Group Middleware: Các middleware được gộp thành nhóm để gọi. Ví dụ như trong file App\Http\Kernel.php có 2 group sẵn là web middleware, api middleware.
+-   Route Middleware: Áp dụng cho từng route cụ thể. Chỉ được gọi khi request đi đến route được setup.
