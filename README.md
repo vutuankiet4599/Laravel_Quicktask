@@ -301,3 +301,16 @@ Ngoài ra, Route Facade còn hỗ trợ gom nhóm route thông qua phương th�
 -   Global Middleware: Bất cứ request nào đi vào server cần phải đi qua middleware này này.
 -   Group Middleware: Các middleware được gộp thành nhóm để gọi. Ví dụ như trong file App\Http\Kernel.php có 2 group sẵn là web middleware, api middleware.
 -   Route Middleware: Áp dụng cho từng route cụ thể. Chỉ được gọi khi request đi đến route được setup.
+
+## Chapter 8:
+
+### Câu 1: Bạn biết những starter kit Authentication nào của Laravel ?
+
+-   Một số starter kit authentication trong Laravel là: Laravel Breeze, Laravel Jetstream, etc
+
+### Câu 2: Trong Quicktask bạn dùng starter nào. Khi cần customize logic thì cần sửa ở đâu ?
+
+-   Trong Quicktask em đã sử dụng Laravel Breeze. Khi cần customize logic:
+    -   Đối với logic của controller: Tại thư mục `app\Http\Controllers\Auth` hoặc file `app\Http\Controllers\ProfileController.php` ta có thể chỉnh sửa logic của controller tương ứng với tác vụ yêu cầu
+    -   Đối với logic của view: Các file trong folder `resources\views\auth` là các file view mà ta có thể chỉnh sửa như thêm thông báo, thêm trường trong biểu mẫu... để phục vụ tác vụ của mình
+    -   Đối với validation rules: Trong thư mục ``app\Http\Requests\Auth` chứa các file có validation rule. Muốn chỉnh sửa rule ta có thể chỉnh sửa các file trong đây.
