@@ -314,3 +314,21 @@ Ngoài ra, Route Facade còn hỗ trợ gom nhóm route thông qua phương th�
     -   Đối với logic của controller: Tại thư mục `app\Http\Controllers\Auth` hoặc file `app\Http\Controllers\ProfileController.php` ta có thể chỉnh sửa logic của controller tương ứng với tác vụ yêu cầu
     -   Đối với logic của view: Các file trong folder `resources\views\auth` là các file view mà ta có thể chỉnh sửa như thêm thông báo, thêm trường trong biểu mẫu... để phục vụ tác vụ của mình
     -   Đối với validation rules: Trong thư mục ``app\Http\Requests\Auth` chứa các file có validation rule. Muốn chỉnh sửa rule ta có thể chỉnh sửa các file trong đây.
+
+## Chapter 10
+
+### Câu 1: Package manager như npm, bower dùng để làm gì ?
+
+-   Các package manager như là npm, yarn, bowe dùng để quản lý, tải cài đặt, quản lý phiên bản và tài liệu các dependencies của javascript. Ngoài ra nó cũng cung cấp các lệnh và tác vụ để kiểm tra phiên bản, cập nhật dependencies...
+
+### Câu 2: Tại sao chúng ta nên thực hiện compile các file css/sass/js... thay vì viết trực tiếp vào public? Bạn sử dụng công cụ nào của Laravel để quản lý và compile các file đó?
+
+Chúng ta cần thực hiện compile các file css/sass/js... thay vì viết trực tiếp vào public với những lý do sau:
+
+-   **_Tăng hiệu năng_**: Các file sau khi được compile ra thường sẽ nhẹ hơn các file gốc, giảm thời gian tải trang giúp tăng hiệu năng.
+
+-   **_Giúp tương thích với nhiều trình duyệt_**: Các trình duyệt khác nhau có hỗ trợ khác nhau với từng ngôn ngữ và từng phiên bản. Việc compile này giúp chương trình có thể chạy trên nhiều trình duyệt mà chỉ cần viết một lần.
+
+-   **_Giúp chuyển đổi code_**: Trình compile có thể compile có thể chuyển đổi code của các phiên bản cấp cao hơn (ví dụ ES6 Javascript) thành mã mà các trình duyệt phiên bản cũ có thể hiểu được. Hơn nữa một số file như typescript, sass không phải là file trình duyệt có thể hiểu được nên cần compile thành file mà trình duyệt có thể hiểu.
+
+-   **_Giúp tổ chức code_**: Khi code ta thường chia thành nhiều file, thành các module nhỏ để dễ phát triển, bảo trì. Trình compile sẽ compile thành 1 file duy nhất để triển khai.
