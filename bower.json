@@ -1,0 +1,21 @@
+{
+  "name": "Laravel_Quicktask",
+  "description": "",
+  "main": "",
+  "authors": [
+    "vutuankiet4599 <vutuankiet4599@gmail.com>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/vutuankiet4599/Laravel_Quicktask",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "light-bootstrap-dashboard": "creativetimofficial/light-bootstrap-dashboard",
+    "template-bower-example": "manhtd-1083/template-bower-example"
+  }
+}
