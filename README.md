@@ -332,3 +332,96 @@ Chúng ta cần thực hiện compile các file css/sass/js... thay vì viết t
 -   **_Giúp chuyển đổi code_**: Trình compile có thể compile có thể chuyển đổi code của các phiên bản cấp cao hơn (ví dụ ES6 Javascript) thành mã mà các trình duyệt phiên bản cũ có thể hiểu được. Hơn nữa một số file như typescript, sass không phải là file trình duyệt có thể hiểu được nên cần compile thành file mà trình duyệt có thể hiểu.
 
 -   **_Giúp tổ chức code_**: Khi code ta thường chia thành nhiều file, thành các module nhỏ để dễ phát triển, bảo trì. Trình compile sẽ compile thành 1 file duy nhất để triển khai.
+
+## Chapter 12
+
+### Câu 1: Cách hoạt động của Eloquent ORM và Query Builder
+
+-   **_Eloquent ORM:_** là 1 tính năng giúp map các bảng trong database với các Model. Eloquent ORM cho phép chúng ta việc thao tác với cơ sở dữ liệu trở nên dễ dàng hơn nhiều. Eloquent ORM cung cấp nhiều phương thức truy cập dữ liệu dễ dàng cho cả với những người chưa có cơ sở nhiều về SQL.
+
+-   **_Query Builder_**: Trong Laravel, Query Builder cung cấp cơ chế dễ dàng để chạy các database query. Nó có thể được sử dụng để thực hiện tất cả, từ kết nối database cơ bản, CRUD, aggregates.... Query Builder sử dụng PDO nên có thể phòng một số tấn công như là SQL Injection. Để dùng Query Builder thì cần biết SQL cơ bản trước. Dùng thông qua Facade DB.
+
+-   Ví dụ lấy toàn bộ bản ghi trong bảng `users` tương ứng với model `User`:
+    ```php
+    // Với Eloquent ORM
+    User::all();
+    // Với Query Builder
+    DB::table('users')->get();
+    ```
+
+### Câu 2: Nêu ưu/nhược điểm của chúng
+
+**Eloquent ORM:**
+
+-   **_Ưu điểm:_**
+    -   Bảo mật cao hơn Query Builder do có một Abstraction Layer giữa project và database. Ta không phải trực tiếp viết câu lệnh SQL giảm thiểu khả năng tấn công SQL Injection. Nó còn hỗ trợ Parameter Binding, Validation và Mass Assignment để đảm bảo an toàn cho câu truy vấn.
+    -   Dễ dùng hơn do cú pháp ngắn gọn, dễ hiểu, không cần quá nhiều kiến thức SQL.
+    -   Quản lý relationship dễ dàng giữa các model, các bảng thông qua nhiều phương thức như `hasMany()`, `belongsTo()`...
+-   **_Nhược điểm:_**
+    -   Hiệu suất truy cập chậm hơn do có một Abstraction Layer.
+    -   Khó thực hiện câu truy vấn phức tạp.
+    -   Cần thời gian để học hỏi, tìm hiểu về cách hoạt động của nó
+
+**Query Builder:**
+
+-   **_Ưu điểm:_**
+    -   Hiệu suất nhanh hơn do Eloquent.
+    -   Có thể xử lý những câu truy vấn phức tạp.
+-   **_Nhược điểm:_**
+    -   Có khả năng xảy ra SQL Injection nếu không sử dụng đúng cách.
+    -   Mã nguồn phức tạp hơn, khó đọc hơn.
+    -   Cần có kiến thức SQL nền tảng.
+
+### Câu 3: Khi nào nên dùng QB hoặc EO?
+
+-   **_Query Builder:_** Khi cần làm việc với một lượng dữ liệu lớn, cần thực hiện các truy vấn phức tạp hay các thao tác liên quan đến cơ sở dữ liệu mà có yêu cầu về hiệu năng hay là trong trường hợp Eloquent không thể xử lý được câu truy vấn.
+-   **_Eloquent ORM:_** Khi bản ghi không quá nhiều hay không có yêu cầu về hiệu năng, cần tính bảo mật hay là khi cần làm việc với nhiều relationship giữa các bảng. Ngoài ra còn sử dụng nếu cần một số chức năng của nó như soft deletes...
+
+### Câu 4: Phân biệt Lazy loading và Eager loading
+
+-   **_Lazy loading:_** Dữ liệu relation của một model chỉ được lấy khi ta truy cập vào nó. Ví dụ:
+
+```php
+$users = User::all();
+foreach ($users as $user)
+{
+    foreach ($user->tasks as $task)
+    {
+        echo $task->content;
+    }
+}
+```
+
+-   **_Eager loading:_** Dữ liệu relation của một model sẽ được lấy ra cùng với model khi model được truy cập. Điều này làm giảm số lượng câu truy vấn và thời gian truy cập tới database. Ví dụ:
+
+```php
+$users = User::with('tasks')->get();
+foreach ($users as $user)
+{
+    foreach ($user['tasks'] as $task)
+    {
+        echo $task['content'];
+    }
+}
+```
+
+### Câu 5: Phân biệt with() và load()
+
+Ví dụ:
+
+```php
+User::with('tasks')->get();
+User::all()->load('tasks');
+```
+
+Cả 2 đều thực hiện câu truy vấn sau:
+
+```sql
+select * from users;
+select * from tasks where user_id in (1, 2, 3, 4, 5, ...);
+```
+
+Điểm khác nhau giữa with và load ở đây là thứ tự thực hiện.
+
+-   `with()` sẽ làm việc với query builder trước, rồi khi gặp những phương thức như `get()` hay `first()`... nó sẽ trả kết quả là các collection.
+-   `load()` thì nó làm việc với các collection, chương trình sẽ chạy các phương thức như `all()`, `first()` trước đưa ra các collection và sau đó thực hiện `load()` các relations sau này.
