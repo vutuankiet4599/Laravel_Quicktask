@@ -18,6 +18,7 @@
                         <th class="text-gray-900 dark:text-gray-100" scope="col">#</th>
                         <th class="text-gray-900 dark:text-gray-100" scope="col">Name</th>
                         <th class="text-gray-900 dark:text-gray-100" scope="col">Username</th>
+                        <th class="text-gray-900 dark:text-gray-100" scope="col">Tasks</th>
                         <th class="text-gray-900 dark:text-gray-100" scope="col">Action</th>
                     </tr>
                 </thead>
@@ -27,6 +28,11 @@
                             <th class="text-gray-900 dark:text-gray-100 text-center" scope="row">{{ $index + 1 }}</th>
                             <td class="text-gray-900 dark:text-gray-100 text-center">{{ $user->fullName }}</td>
                             <td class="text-gray-900 dark:text-gray-100 text-center">{{ $user['username']}} </td>
+                            <td class="text-gray-900 dark:text-gray-100 text-center">
+                                @foreach ($user->tasks as $task) 
+                                    <span>{{$task['content']}} | </span>
+                                @endforeach
+                            </td>
                             <td class="text-gray-900 dark:text-gray-100 text-center">
                                 <x-nav-link :href="route('users.show', ['user' => $user])">
                                     <x-primary-button class="mt-4">
@@ -38,9 +44,13 @@
                                         {{ __("Edit user") }}
                                     </x-primary-button>
                                 </x-nav-link>
-                                <x-danger-button class="mt-4">
-                                    {{ __("Delete user") }}
-                                </x-danger-button>
+                                <form action="{{ route('users.destroy', ['user' => $user->id]) }}" method="post" class="inline-block">
+                                    @csrf
+                                    @method('delete')
+                                    <x-danger-button class="mt-4">
+                                        {{ __("Delete user") }}
+                                    </x-danger-button>
+                                </form>
                             </td>
                         </tr>
                     @endforeach
