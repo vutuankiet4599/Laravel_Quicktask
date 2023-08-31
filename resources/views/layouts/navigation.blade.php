@@ -16,6 +16,18 @@
                         {{ __('Dashboard') }}
                     </x-nav-link>
                 </div>
+
+                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                    <x-nav-link :href="route('language.change', ['language' => 'vi'])" :active="request()->routeIs('language.change')">
+                        VI
+                    </x-nav-link>
+                </div>
+
+                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                    <x-nav-link :href="route('language.change', ['language' => 'en'])" :active="request()->routeIs('language.change')">
+                        EN
+                    </x-nav-link>
+                </div>
             </div>
 
             <!-- Settings Dropdown -->

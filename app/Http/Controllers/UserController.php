@@ -12,7 +12,9 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        return view('users.index', [
+            "users" => User::all(),
+        ]);
     }
 
     /**
@@ -20,7 +22,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        return view('users.create');
     }
 
     /**
@@ -36,7 +38,9 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        //
+        return view('users.show', [
+            "user" => $user,
+        ]);
     }
 
     /**
@@ -44,7 +48,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        //
+        return view('users.edit', compact("user"));
     }
 
     /**
@@ -52,7 +56,11 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        //
+        $user->first_name = $request->first_name;
+        $user->last_name = $request->last_name;
+        $user->save();
+
+        return redirect()->back();
     }
 
     /**
