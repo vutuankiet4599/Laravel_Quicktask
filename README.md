@@ -425,3 +425,42 @@ select * from tasks where user_id in (1, 2, 3, 4, 5, ...);
 
 -   `with()` sẽ làm việc với query builder trước, rồi khi gặp những phương thức như `get()` hay `first()`... nó sẽ trả kết quả là các collection.
 -   `load()` thì nó làm việc với các collection, chương trình sẽ chạy các phương thức như `all()`, `first()` trước đưa ra các collection và sau đó thực hiện `load()` các relations sau này.
+
+## Chapter 13
+
+### Câu 1: Transaction dùng trong trường hợp nào? Nêu ví dụ.
+
+Transaction được dùng trong trường hợp ta cần một hay nhiều xử lý để thay đổi dữ liệu và tất cả xử lý đấy cần phải được hoàn thành toàn bộ, dữ liệu phải chính xác, khi xảy ra lỗi thì phải có thể quay về trạng thái ban đầu. Nói tóm lại là các xử lý đó phải đảm bảo 4 thuộc tính [ACID](https://viblo.asia/p/tim-hieu-ve-transactions-maGK73xeKj2).
+
+Ví dụ: Ta muốn xóa một user
+
+```php
+$u = User::find(1);
+$u->tasks()->delete();
+$u->delete();
+```
+
+Nó sẽ có thể xảy ra lỗi sau:
+
+```bash
+SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`laravel`.`roles_user
+s`, CONSTRAINT `roles_users_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)) (Connection: mysql, SQL: delete from `users` where `id` = 1).
+```
+
+Lỗi xảy ra là vì trong database có bảng roles_users chứa khóa ngoại tham chiếu đến bảng users khi xóa user mà chưa detach thì nó sẽ thông báo lỗi như thế này. Nhưng mà tasks lại bị xóa hết rồi.
+
+### Câu 2: Saveponit trong transaction là gì?
+
+-   Savepoint là một điểm trong một transaction giúp ta có thể lùi transaction trở lại điểm đó mà không cần lùi lại toàn bộ.
+
+-   Cú pháp tạo Savepoint trong sql:
+
+```sql
+SAVEPOINT name;
+```
+
+-   Khi cần rollback:
+
+```sql
+ROLLBACK TO name;
+```
