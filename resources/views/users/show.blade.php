@@ -19,9 +19,10 @@
                 <thead>
                     <tr>
                         <th class="text-gray-900 dark:text-white" scope="col">#</th>
-                        <th class="text-gray-900 dark:text-white" scope="col">Content</th>
-                        <th class="text-gray-900 dark:text-white" scope="col">Deadline</th>
-                        <th class="text-gray-900 dark:text-white" scope="col">Action</th>
+                        <th class="text-gray-900 dark:text-white" scope="col">{{ __("Content") }}</th>
+                        <th class="text-gray-900 dark:text-white" scope="col">{{ __("Deadline") }}</th>
+                        <th class="text-gray-900 dark:text-white" scope="col">{{ __("Created at" )}}</th>
+                        <th class="text-gray-900 dark:text-white" scope="col">{{ __("Action") }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -30,6 +31,7 @@
                         <th class="text-gray-900 dark:text-white text-center p-5" scope="row">{{ $index + 1 }}</th>
                         <td class="text-gray-900 dark:text-white text-center break-words w-2/5">{{ $task->content }}</td>
                         <td class="text-gray-900 dark:text-white text-center">{{ $task->deadline }}</td>
+                        <td class="text-gray-900 dark:text-white text-center">{{ formatDateYDM($task->created_at) }}</td>
                         <td class="text-gray-900 dark:text-white text-center">
                             <x-nav-link :href="route('tasks.edit', ['task' => $task])">
                                 <x-primary-button class="mt-4">

@@ -16,10 +16,11 @@
                 <thead>
                     <tr>
                         <th class="text-gray-900 dark:text-gray-100" scope="col">#</th>
-                        <th class="text-gray-900 dark:text-gray-100" scope="col">Name</th>
-                        <th class="text-gray-900 dark:text-gray-100" scope="col">Username</th>
-                        <th class="text-gray-900 dark:text-gray-100" scope="col">Tasks</th>
-                        <th class="text-gray-900 dark:text-gray-100" scope="col">Action</th>
+                        <th class="text-gray-900 dark:text-gray-100" scope="col">{{ __("Name") }}</th>
+                        <th class="text-gray-900 dark:text-gray-100" scope="col">{{ __("Username") }}</th>
+                        <th class="text-gray-900 dark:text-gray-100" scope="col">{{ __("Created at" )}}</th>
+                        <th class="text-gray-900 dark:text-gray-100" scope="col">{{ __("Task") }}</th>
+                        <th class="text-gray-900 dark:text-gray-100" scope="col">{{ __("Action") }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -27,7 +28,8 @@
                         <tr class="border-b-2 border-b-black">
                             <th class="text-gray-900 dark:text-gray-100 text-center" scope="row">{{ $index + 1 }}</th>
                             <td class="text-gray-900 dark:text-gray-100 text-center">{{ $user->fullName }}</td>
-                            <td class="text-gray-900 dark:text-gray-100 text-center">{{ $user['username']}} </td>
+                            <td class="text-gray-900 dark:text-gray-100 text-center">{{ $user['username'] }} </td>
+                            <td class="text-gray-900 dark:text-gray-100 text-center">{{ formatDateDMY($user['created_at']) }} </td>
                             <td class="text-gray-900 dark:text-gray-100 text-center">
                                 @foreach ($user->tasks as $task) 
                                     <span>{{$task['content']}} | </span>
