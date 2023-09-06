@@ -38,11 +38,6 @@
                                     {{ __('Edit task') }}
                                 </x-primary-button>
                             </x-nav-link>
-                            <x-nav-link :href="route('tasks.destroy', ['task' => $task])">
-                                <x-primary-button class="mt-4">
-                                    {{ __('Delete task') }}
-                                </x-primary-button>
-                            </x-nav-link>
                             <form action="{{route('tasks.destroy', ['task' => $task->id])}}" method="post">
                                 @csrf
                                 @method("delete")

@@ -89,7 +89,8 @@ class UserController extends Controller
             $user->roles()->detach();
             $user->delete();
 
-            return redirect('/users');
         }, config('database.max_attempts'));
+
+        return redirect()->route('users.index');
     }
 }
